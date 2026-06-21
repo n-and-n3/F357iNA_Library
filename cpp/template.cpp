@@ -40,6 +40,161 @@ ll powll(ll a, ll n, ll m){
     return (ll)ans;
 }
 
+// {a,b} → {a^-1 mod b,gcd(a,b)}
+template <typename T>
+pair<T,T> exgcd(T a, T b){
+    T xs = 1, ys = 0, xt = 0, yt = 1, tmp;
+    while (b != 0){
+        tmp = a/b;
+        a = a%b;
+        xs -= tmp*xt;
+        ys -= tmp*yt;
+        swap(xs,xt);
+        swap(ys,yt);
+        swap(a,b);
+    }
+    return {xs,a};
+}
+
+
+template<int MOD>
+struct static_modint
+{
+    int _val;
+
+    static_modint() : _val(0){};
+    static_modint(int __val) : _val(__val % MOD){if (_val < 0){_val += MOD;}};
+    static_modint(ll __val) : _val(__val % (ll)MOD){if (_val < 0){_val += MOD;}}; 
+
+    static_modint operator+(static_modint other) const {
+        int tmp = _val + other._val;
+        if (tmp >= MOD){
+            tmp -= MOD;
+        }
+        return static_modint(tmp);
+    }
+
+    static_modint operator-(static_modint other) const {
+        int tmp = _val - other._val;
+        if (tmp < 0){
+            tmp += MOD;
+        }
+        return static_modint(tmp);
+    }
+
+    static_modint operator*(static_modint other) const {
+        return static_modint((ll)_val * (ll)other._val);
+    }
+
+    static_modint operator/(static_modint other) const {
+        return static_modint(*this * other.inv());
+    }
+
+    static_modint inv() const {
+        auto [x, g] = exgcd(_val, MOD);
+        if (g != 1){
+            throw invalid_argument("Inverse does not exist.");
+        }
+        return static_modint(x);
+    }
+
+    static_modint pow(ll n) const {
+        ll res = 1;
+        ll x = (ll)_val;
+        while (n > 0){
+            if (n & 1){
+                res = (ll)(((__int128)res * x) % MOD);
+            }
+            x = (ll)(((__int128)x * x) % MOD);
+            n >>= 1;
+        }
+        return static_modint(res);
+    }
+
+    static_modint operator++(){
+        _val += 1;
+        if (_val == MOD){
+            _val = 0;
+        }
+        return *this;
+    }
+
+    static_modint operator--(){
+        if (_val == 0){
+            _val = MOD;
+        }
+        _val -= 1;
+        return *this;
+    }
+
+    static_modint operator++( int ){
+        static_modint tmp = *this;
+        ++*this;
+        return tmp;
+    }
+
+    static_modint operator--( int ){
+        static_modint tmp = *this;
+        --*this;
+        return tmp;
+    }
+
+    static_modint& operator+=(static_modint other){
+        _val += other._val;
+        if (_val >= MOD){
+            _val -= MOD;
+        }
+        return *this;
+    }
+
+    static_modint& operator-=(static_modint other){
+        _val -= other._val;
+        if (_val < 0){
+            _val += MOD;
+        }
+        return *this;
+    }
+
+    static_modint& operator*=(static_modint other){
+        _val = (ll)_val * (ll)other._val % MOD;
+        return *this;
+    }
+
+    static_modint& operator/=(static_modint other){
+        return *this *= other.inv();
+    }
+
+    static_modint operator-() const {
+        if (_val == 0){
+            return static_modint(0);
+        } else {
+            return static_modint(MOD - _val);
+        }
+    }
+
+    static_modint operator+() const {
+        return *this;
+    }
+
+
+    bool operator==(const static_modint& other) const{return _val == other._val;}
+    bool operator!=(const static_modint& other) const{return _val != other._val;}
+    bool operator<(const static_modint& other) const{return _val < other._val;}
+    bool operator>(const static_modint& other) const{return _val > other._val;}
+    bool operator<=(const static_modint& other) const{return _val <= other._val;}
+    bool operator>=(const static_modint& other) const{return _val >= other._val;}
+
+    operator int() const { return _val; }
+
+    int val() const { return _val; }
+
+    
+};
+
+using mint = static_modint<998244353>;
+istream &operator>>(istream &is, mint &i){long long t; is >> t; i = t; return is; }
+ostream &operator<<(ostream &os, const mint &i){ os << i.val(); return os;}
+
 //=========================================================================================
 
 int main(){
