@@ -1,0 +1,338 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cmath>
+#include <set>
+#include <unordered_map>
+#include <map>
+#include <unordered_set>
+#include <queue>
+#include <algorithm>
+#include <iomanip>
+#include <functional>
+#include <cassert>
+#include <bit>
+#include <array>
+#include <random>
+
+using namespace std;
+
+#define ll long long
+#define LL __int128
+#define ld long double
+#define INF 2251799813685248
+#define rep(i, n) for (ll i = 0; i < (n); ++i)
+#define reps(i, l, r) for(ll i = (l); i < (r); ++i)
+#define foreach(c, A) for(auto c:(A))
+#define vall(A) (A).begin(),(A).end()
+#define vrall(A) (A).rbegin(),(A).rend()
+#define slice(A, l, r) next((A).begin(), (l)), next((A).begin(), (r))
+#define vin(A) for (ll iiii = 0, szszszsz = (A).size(); iiii < szszszsz; iiii++){cin >> (A)[iiii];}
+#define vout(A) for (ll iiii = 0, szszszsz = (A).size(); iiii < szszszsz; iiii++){cout << (A)[iiii] << " \n"[iiii == szszszsz-1];}
+#define vin2d(A) for (ll iiii = 0; iiii < (A).size(); iiii++){for (ll jjjj = 0; jjjj < (A)[iiii].size(); jjjj++){cin >> (A)[iiii][jjjj];}}
+#define vout2d(A) for (ll iiii = 0; iiii < (A).size(); iiii++){for (ll jjjj = 0; jjjj < (A)[iiii].size(); jjjj++){cout << (A)[iiii][jjjj] << " \n"[jjjj==(A)[iiii].size()-1];}}
+#define encode(i,j) (((i))<<32)+(j)
+#define decode(v,w) ((w) ? (v)%4294967296 : (v)>>32)
+#define vinc(A) for (auto &vvvv : (A)){vvvv++;}
+#define vdec(A) for (auto &vvvv : (A)){vvvv--;}
+#define graphin0(C, M) int aaaa,bbbb;for (int iiii = 0; iiii < (M); iiii++){cin >> aaaa >> bbbb; (C)[aaaa].push_back(bbbb); (C)[bbbb].push_back(aaaa);}
+#define graphin1(C, M) int aaaa,bbbb;for (int iiii = 0; iiii < (M); iiii++){cin >> aaaa >> bbbb; (C)[aaaa-1].push_back(bbbb-1); (C)[bbbb-1].push_back(aaaa-1);}
+#define lsegtype(name) name::S, name::F
+#define lsegarg(name) name::op, name::e,name::comp, name::mapping, name::id
+
+vector<ll> pow2ll{1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144,524288,1048576,2097152,4194304,8388608,16777216,33554432,67108864,134217728,268435456,536870912,1073741824,2147483648,4294967296,8589934592,17179869184,34359738368,68719476736,137438953472,274877906944,549755813888,1099511627776,2199023255552,4398046511104,8796093022208,17592186044416,35184372088832,70368744177664,140737488355328,281474976710656,562949953421312,1125899906842624,2251799813685248,4503599627370496,9007199254740992,18014398509481984,36028797018963968,72057594037927936,144115188075855872,288230376151711744,576460752303423488,1152921504606846976,2305843009213693952,4611686018427387904};
+vector<ll> pow10ll{1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000,10000000000,100000000000,1000000000000,10000000000000,100000000000000,1000000000000000,10000000000000000,100000000000000000,1000000000000000000};
+vector<ll> di{0,1,0,-1};
+vector<ll> dj{1,0,-1,0};
+
+template <typename T>
+bool chmax(T &a, const T& b) { return a < b ? a = b, true : false; }
+template <typename T>
+bool chmin(T &a, const T& b) { return a > b ? a = b, true : false; }
+
+unsigned int bit_length(ll n){ return n > 0 ? 64 - __builtin_clzll(n) : 0;}
+
+template <typename T>
+T sum(vector<T> A){
+    T res = 0;
+    for (size_t i=0;i<A.size();i++){
+        res += A[i];
+    }
+    return res;
+}
+
+ll powll(ll a, ll n, ll m){
+    if (n == 0){return 1;}
+    if (n == 1){return a % m;}
+    LL ans = 1;
+    LL p = a;
+    while(n > 0){
+        if ((n & 1) == 1){
+            ans *= p;
+            ans %= m;
+        }
+        n >>= 1;
+        p *= p;
+        p %= m;
+    }
+    return (ll)ans;
+}
+
+// ===============================================================================
+
+
+ll fast_isqrt(ll x){
+    ll ret = sqrt(x);
+    while (ret*ret > x){
+        ret--;
+    }
+    while ((ret+1)*(ret+1) <= x){
+        ret++;
+    }
+    return ret;
+}
+
+ll fast_icbrt(ll x){
+    ll ret = cbrt(x);
+    while (ret*ret*ret > x){
+        ret--;
+    }
+    while ((ret+1)*(ret+1)*(ret+1) <= x){
+        ret++;
+    }
+    return ret;
+}
+
+long long safe_pow(long long a,long long b){
+  long long res=1;
+  for(long long i=0;i<b;i++){
+      long double dres=res;
+      dres*=a;
+      if(dres>2e18){return 2e18;}
+      res*=a;
+  }
+  return res;
+}
+
+unsigned int bit_length(ll n){ return n > 0 ? 64 - __builtin_clzll(n) : 0;}
+
+
+
+ll cipolla(ll a, ll const p) { 
+    // 前処理
+    if (p == 2){return a;}
+    if (a == 0){return 0;}
+
+    // オイラーの基準
+    int e = (p-1)/2;
+    ll res = 1,tmp = a;
+    while(e > 0){
+        if (e & 1){res *= tmp;res %= p;}
+        tmp *= tmp;tmp %= p;e >>= 1;
+    }
+    if (res != 1){return -1;}
+
+    // b*b - a が非平方剰余となる b を乱択で探索
+    ll b = 0;
+    // assert(res == 1); // 変数の使いまわしをしている
+    while (res != p-1){
+        b++;
+        e = (p-1)/2;
+        res = 1;tmp = (b*b+p-a)%p;
+        while(e > 0){
+            if (e & 1){res *= tmp;res %= p;}
+            tmp *= tmp;tmp %= p;e >>= 1;
+        }
+    }
+
+    // F_p[sqrt(b*b+p-a)] で冪乗
+    ll base = (b*b+p-a)%p;
+    ll res_real = 1, res_image = 0;
+    ll tmp_real = b, tmp_image = 1;
+    pair<ll,ll> tmpp;
+    e = (p+1)/2;
+    while(e > 0){
+        if (e & 1){
+            // res *= tmp; res %= p;
+            tmpp = {res_real*tmp_real%p + res_image*tmp_image%p*base%p, res_real*tmp_image%p + res_image*tmp_real%p};
+            res_real = tmpp.first; res_image = tmpp.second;
+            if (res_real >= p){res_real-=p;}
+            if (res_image >= p){res_image-=p;}
+        }
+        // tmp *= tmp;tmp %= p;
+        tmpp = {tmp_real*tmp_real%p + tmp_image*tmp_image%p*base%p, tmp_real*tmp_image%p*2};
+        tmp_real = tmpp.first; tmp_image = tmpp.second;
+        if (tmp_real >= p){tmp_real-=p;}
+        if (tmp_image >= p){tmp_image-=p;}
+        e >>= 1;
+    }
+    
+    return res_real;
+}
+
+inline ll count_liner(ll l, ll r, ll c, ll M){
+    // [l,r) に含まれる数xであって、x%M == c となるものの個数を数える
+    // assert(0 <= c && c < M);
+    return (r+M-c-1)/M - (l+M-c-1)/M;
+}
+
+
+inline ll count_square(ll l, ll r){
+    // [l,r) に含まれる数xであって、平方数であるものの個数を求める
+    return fast_isqrt(l-1) - fast_isqrt(r-1);
+}
+
+inline ll ceil_sqrt(ll x){  // x以上で最小の平方数のルート、ceil(√x)
+    ll tmp = fast_isqrt(x);
+    if (tmp * tmp == x){
+        return tmp;
+    } else {
+        return tmp+1;
+    }
+}
+
+// {a,b} → {a^-1 mod b,gcd(a,b)}
+template <typename T>
+pair<T,T> exgcd(T a, T b){
+    T xs = 1, ys = 0, xt = 0, yt = 1, tmp;
+    while (b != 0){
+        tmp = a/b;
+        a = a%b;
+        xs -= tmp*xt;
+        ys -= tmp*yt;
+        swap(xs,xt);
+        swap(ys,yt);
+        swap(a,b);
+    }
+    return {xs,a};
+}
+
+inline ll inv(ll x, ll p){
+    return exgcd(x ,p).first;
+}
+
+
+
+//template <int prime>
+ll Prod_of_Sum_of_Log(ll N){
+    // solve \prod_{i=2}^N \sum_{k}^\infty \lfloor \log_k i \rfloor
+    constexpr int prime = 3;
+    using lll = __int128_t;
+    if (N <= 1){return 0;}
+
+    if (N <= 0){ return 0;}
+
+    int bound = fast_icbrt(N);
+
+
+    vector<ll> transitions;
+    transitions.push_back(N+1);
+    for (ll i = bit_length(N); i >= 3; i--){
+        vector<ll> temp;
+        for (ll j = 2;; j++){
+            lll temp2 = safe_pow(j,i);
+            if (temp2 > N){break;}
+            temp.push_back((ll)temp2);
+        }
+        reverse(temp.begin(), temp.end());
+        vector<ll> transitions2;
+        while (true){
+            if (temp.empty()){
+                for (ll i = (ll)transitions.size()-1; i >= 0; i--){
+                    transitions2.push_back(transitions[i]);
+                }
+                break;
+            }
+            if (transitions.empty()){
+                for (ll i = (ll)temp.size()-1; i >= 0; i--){
+                    transitions2.push_back(temp[i]);
+                }
+                break;
+            }
+            if (temp.back() < transitions.back()){
+                transitions2.push_back(temp.back());
+                temp.pop_back();
+            }
+            else{
+                transitions2.push_back(transitions.back());
+                transitions.pop_back();
+            }
+        }
+        reverse(transitions2.begin(), transitions2.end());
+        transitions = transitions2;
+    }
+
+    ll ans = 0;
+    ll prev_S = 1;
+    ll prev_now = 2;
+    for (ll i = (ll)transitions.size()-1; i >= 0; i--){
+        // [prev_now, now) に含まれる数 k に関して和を取る
+        ll now = transitions[i];
+        ll cs = count_square(prev_now, now);
+        ll S = prev_S + cs + 1;
+
+        // 部分ルジャンドルの公式
+        lll P = prime;
+        while (P <= now){
+            ans += count_liner(prev_now, now, 0, (ll)P);
+            P *= prime;
+        }
+
+        // 平方数部分の除去
+        // 一旦愚直実装をする
+        for (ll j = ceil_sqrt(prev_now); j*j < now; j++){
+        }
+        
+        prev_now = now;
+        prev_S = S;
+    }
+
+
+}
+
+
+// ===============================================================================
+
+unsigned long long ilog_k(const unsigned long long x, const int k) { // k^ilog_k(x) <= x < k^(ilog_k(x)+1)
+    assert(k >= 2 && x >= 1);
+    if(x < k) return 0;
+    unsigned long long res = 0;
+    unsigned long long power = 1;
+    while(power < x/k) {
+        power *= k;
+        res++;
+    }
+    return res;
+}
+
+// template <int prime>
+ll Prod_of_Sum_of_Log_test(ll N){
+    constexpr int prime = 3;
+
+    if (N <= 1){ return 0;}
+    ll ans = 0;
+    for (int i=2;i<=N;i++){
+        ll tmp = 1;
+        for (int j=2;j<=i;j++){
+            tmp += ilog_k(i, j);
+        }
+        while (tmp % prime == 0){
+            tmp /= prime;
+            ans++;
+        }
+    }
+    return ans;
+}
+
+// ===============================================================================
+
+int main(){
+    ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+
+    // 入力 N が与えられる。
+    //     $$\prod_{i=2}^N \sum_{j=2}^\infty \lfloor \log_j i \rfloor$$
+    // を求めて、これが素数 p で何回割ることができるかを求めよ。
+    // 想定計算量：O(∛N log p)
+    
+}
