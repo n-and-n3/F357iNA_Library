@@ -52,6 +52,15 @@ ll powll(ll a, ll n, ll m){
     return (ll)ans;
 }
 
+long long isqrt(long long n) {
+  if (n <= 0) return 0;
+  long long x = sqrt(n);
+  while ((x + 1) * (x + 1) <= n) x++;
+  while (x * x > n) x--;
+  return x;
+}
+
+
 // {a,b} → {a^-1 mod b,gcd(a,b)}
 template <typename T>
 pair<T,T> exgcd(T a, T b){
@@ -298,14 +307,6 @@ vll Eular_func(ll N){
         }
     }
     return res;
-}
-
-long long isqrt(long long n) {
-  if (n <= 0) return 0;
-  long long x = sqrt(n);
-  while ((x + 1) * (x + 1) <= n) x++;
-  while (x * x > n) x--;
-  return x;
 }
 
 //=========================================================================================
