@@ -8,12 +8,14 @@ using ull = unsigned long long;
 using ld = long double;
 
 /*repマクロ*/
-#define OVERLOAD_REP(a, b, c, d, name, ...) name
-#define rep(...) OVERLOAD_REP(__VA_ARGS__, REP3, REP2, REP1, REP0)(__VA_ARGS__)
-#define REP0(x) for (int _rep_counter = 0; _rep_counter < (x); ++_rep_counter)
-#define REP1(i, x) for (int i = 0; (i) < (x); ++(i))
-#define REP2(i, l, r) for (int i = (l); (i) < (r); ++(i))
-#define REP3(i, l, r, c) for (int i = (l); ((c) > 0 ? (i) < (r) : (i) > (r)); i += (c))
+#define REP_CAT_INNER(a,b) a##b
+#define REP_CAT(a,b) REP_CAT_INNER(a,b)
+#define OVERLOAD_REP(a,b,c,d,name,...) name
+#define rep(...) OVERLOAD_REP(__VA_ARGS__,REP3,REP2,REP1,REP0)(__VA_ARGS__)
+#define REP0(x) for(auto REP_CAT(_rep_c_,__LINE__):std::views::iota(0LL,(long long)(x)))
+#define REP1(i,x) for(auto i:std::views::iota(0LL,(long long)(x)))
+#define REP2(i,l,r) for(auto i:std::views::iota((long long)(l),(long long)(r)))
+#define REP3(i,l,r,c) for(long long i=(long long)(l),REP_CAT(_rep_e_,__LINE__)=(long long)(r),REP_CAT(_rep_s_,__LINE__)=(long long)(c);(REP_CAT(_rep_s_,__LINE__)>0?i<REP_CAT(_rep_e_,__LINE__):i>REP_CAT(_rep_e_,__LINE__));i+=REP_CAT(_rep_s_,__LINE__))
 
 #define vall(A) (A),begin(),(A).end()
 vector<ll> pow2ll{1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144,524288,1048576,2097152,4194304,8388608,16777216,33554432,67108864,134217728,268435456,536870912,1073741824,2147483648,4294967296,8589934592,17179869184,34359738368,68719476736,137438953472,274877906944,549755813888,1099511627776,2199023255552,4398046511104,8796093022208,17592186044416,35184372088832,70368744177664,140737488355328,281474976710656,562949953421312,1125899906842624,2251799813685248,4503599627370496,9007199254740992,18014398509481984,36028797018963968,72057594037927936,144115188075855872,288230376151711744,576460752303423488,1152921504606846976,2305843009213693952,4611686018427387904};
