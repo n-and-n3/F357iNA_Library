@@ -60,6 +60,19 @@ long long isqrt(long long n) {
   return x;
 }
 
+template <typename T>
+inline int bit_length(T n) {
+    static_assert(std::is_integral_v<T>, "bit_length: unsupported type");
+    if (n <= 0) return 0; 
+    return std::bit_width(static_cast<std::make_unsigned_t<T>>(n));
+}
+
+template <typename T>
+inline int bit_count(T n) {
+    static_assert(std::is_integral_v<T>, "bit_count: unsupported type");
+    return std::popcount(static_cast<std::make_unsigned_t<T>>(n));
+}
+
 
 // {a,b} → {a^-1 mod b,gcd(a,b)}
 template <typename T>
